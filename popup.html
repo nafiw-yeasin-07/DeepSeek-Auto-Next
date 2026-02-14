@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    body { font-family: Arial, sans-serif; width: 340px; padding: 12px; }
+    textarea, input { width: 100%; box-sizing: border-box; margin: 6px 0 10px; }
+    button { width: 100%; padding: 10px; margin: 6px 0; cursor: pointer; }
+    .row { display: flex; gap: 8px; }
+    .row button { width: 50%; }
+    .small { font-size: 12px; opacity: 0.85; }
+    .status { margin-top: 8px; font-weight: bold; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+    .rangeRow { display: grid; grid-template-columns: 1fr 90px; gap: 8px; align-items: center; }
+    .pairRow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .hint { margin-top: -6px; margin-bottom: 10px; }
+    label { display: block; }
+
+    /* Your slider colour */
+    input[type="range"] { accent-color: #7c3aed; }
+  </style>
+</head>
+
+<body>
+  <div><b>DeepSeek Auto Next</b></div>
+
+  <label class="small">Prompts list, separate by a blank line</label>
+  <textarea id="promptsRaw" rows="8" placeholder="Prompt 1...&#10;&#10;Prompt 2...&#10;&#10;Use {prev} and {next}"></textarea>
+
+  <label class="small">Fallback message if list is empty</label>
+  <textarea id="fallbackMessage" rows="2"></textarea>
+
+  <label class="small">Total chapters</label>
+  <div class="rangeRow">
+    <input id="totalChaptersRange" type="range" min="1" max="300" value="40" />
+    <input id="totalChapters" type="number" min="1" max="300" step="1" value="40" />
+  </div>
+  <div class="small mono hint" id="totalChaptersHint"></div>
+
+  <label class="small">Next chapter picker</label>
+  <div class="rangeRow">
+    <input id="chapterRange" type="range" min="1" max="1" value="1" />
+    <input id="chapterNumber" type="number" min="1" step="1" value="1" />
+  </div>
+  <div class="small mono hint" id="chapterHint"></div>
+
+  <label class="small">Quiet range ms (wait for DeepSeek to finish)</label>
+  <div class="pairRow">
+    <input id="quietMin" type="number" min="0" step="100" placeholder="min" />
+    <input id="quietMax" type="number" min="0" step="100" placeholder="max" />
+  </div>
+
+  <label class="small">Min gap range ms (cooldown after sending)</label>
+  <div class="pairRow">
+    <input id="gapMin" type="number" min="0" step="100" placeholder="min" />
+    <input id="gapMax" type="number" min="0" step="100" placeholder="max" />
+  </div>
+
+  <label class="small">Jitter range ms (extra random delay)</label>
+  <div class="pairRow">
+    <input id="jitterMin" type="number" min="0" step="100" placeholder="min" />
+    <input id="jitterMax" type="number" min="0" step="100" placeholder="max" />
+  </div>
+
+  <label class="small">
+    <input id="useMaxRuns" type="checkbox" />
+    Use max sends override
+  </label>
+
+  <div class="rangeRow" id="maxRunsRow">
+    <input id="maxRuns" type="number" min="1" max="9999" step="1" value="39" />
+    <div class="small mono" id="maxRunsHint"></div>
+  </div>
+
+  <label class="small">
+    <input id="stopAtEnd" type="checkbox" />
+    Stop when prompt list ends
+  </label>
+
+  <div class="row">
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+  </div>
+
+  <div class="status" id="status">Status: …</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
